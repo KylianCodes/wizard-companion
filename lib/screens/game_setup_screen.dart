@@ -54,7 +54,7 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
             Row(
               children: [
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () => _startGame(),
                   child: Text('Start Game'),
                 ),
               ],
@@ -87,5 +87,22 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
       _playerCount = n;
       _controllers = List.generate(n, (_) => TextEditingController());
     });
+  }
+
+  void _startGame() {
+    bool isEmpty = false;
+
+    for (var c in _controllers) {
+      if (c.text == "") {
+        isEmpty = true;
+        break;
+      }
+    }
+
+    if (isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Player names are required.'))
+      );
+    }
   }
 }
