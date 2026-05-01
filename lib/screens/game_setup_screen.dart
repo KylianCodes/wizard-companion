@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'game_screen.dart';
 
 class GameSetupScreen extends StatefulWidget {
   const GameSetupScreen({super.key});
@@ -8,11 +9,14 @@ class GameSetupScreen extends StatefulWidget {
 }
 
 class _GameSetupScreenState extends State<GameSetupScreen> {
+  
   int _playerCount = 3;
   List<TextEditingController> _controllers = [];
+
   final ButtonStyle activeStyle = ElevatedButton.styleFrom(
     backgroundColor: Colors.deepPurple,
   );
+  
   final ButtonStyle inactiveStyle = ElevatedButton.styleFrom(
     backgroundColor: Colors.grey,
   );
@@ -93,7 +97,7 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
     bool isEmpty = false;
 
     for (var c in _controllers) {
-      if (c.text == "") {
+      if (c.text.trim() == "") {
         isEmpty = true;
         break;
       }
@@ -102,6 +106,14 @@ class _GameSetupScreenState extends State<GameSetupScreen> {
     if (isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Player names are required.'))
+      );
+    } else {
+      final names = _controllers.map((c) => c.text.trim()).toList();
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => GameScreen(playerNames: names),
+        ),
       );
     }
   }
